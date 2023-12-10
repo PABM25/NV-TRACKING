@@ -1,0 +1,71 @@
+{% include 'app/base.html' %} 
+
+{% load django_bootstrap5 %}
+
+{% load static %} 
+
+{% block contenido %}
+
+<head>
+    <meta charset="UTF-8">
+    <title>Ruta Marítima - Puerto Montt</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+</head>
+
+<body id="barco1">
+    <div class="container" id="contbarco"> 
+        <h1 id="titleba">Detalles del Barco</h1>
+        
+        <table id="table1">
+            <tr>
+                <th class="a">Número de Barco</th>
+                <th class="a">Cantidad de Tripulación</th>
+                <th class="a">Hora de Salida</th>
+                <th class="a">Hora de Llegada</th>
+            </tr>
+            <tr class="tr1">
+                <td class="b">{{ barco.numero_barco }}</td>
+                <td class="b">{{ barco.cantidad_tripulacion }}</td>
+                <td class="b">{{ barco.hora_salida }}</td>
+                <td class="b">{{ barco.hora_regreso }}</td>
+            </tr>
+        </table>
+
+        <div class="buttons">
+            <button class="btn-carga">Confirmación de Carga</button>
+            <button class="btn-tripulacion">Confirmación de Tripulación</button>
+        </div>
+    </div>
+
+
+
+    <div class="container" id="map-container"> 
+        <h1 id="map-title" id="map-title">Recorrido</h1>
+        <div id="map"></div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        var map = L.map('map').setView([-41.4851, -72.9745], 10); // Puerto Montt
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+        }).addTo(map);
+
+        // Coordenadas para Caleta La Arena y Caleta Gonzalo (solo como ejemplo, deberías obtener las coordenadas exactas)
+        var caletaLaArena = L.latLng(-41.468, -72.942);
+        var caletaGonzalo = L.latLng(-41.548, -73.055);
+
+        // Agrega una polilínea que representa la ruta entre Caleta La Arena y Caleta Gonzalo
+        var polyline = L.polyline([caletaLaArena, caletaGonzalo], { color: 'blue' }).addTo(map);
+
+        // Agrega marcadores para Caleta La Arena y Caleta Gonzalo
+        L.marker(caletaLaArena).addTo(map)
+            .bindPopup('Caleta La Arena');
+
+        L.marker(caletaGonzalo).addTo(map)
+            .bindPopup('Caleta Gonzalo');
+    </script>
+</body>
+
+{% endblock %}

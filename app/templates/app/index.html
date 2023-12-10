@@ -1,0 +1,83 @@
+{% include 'app/base.html' %} 
+
+{% load django_bootstrap5 %}
+
+{% load static %} 
+
+{% block contenido %}
+    <!-- Agrega el enlace a Bootstrap (o utiliza un CDN) -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Agrega el enlace a jQuery (o utiliza un CDN) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<body>
+    <h1 class="IngresoP"> Ingreso a la planta </h1>
+    <div class="container" id="forms">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Formulario de Camión</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="form-camion">
+                            {% csrf_token %}
+                            {{ camion_form.as_p }}
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Informe de Control de Calidad</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="form-informe">
+                            {% csrf_token %}
+                            {{ informe_form.as_p }}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-12">
+                <button id="submit-all" class="btn btn-primary">Guardar ambos formularios</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('#submit-all').on('click', function (e) {
+                e.preventDefault();
+    
+                var formDataCamion = new FormData($('#form-camion')[0]);
+                var formDataInforme = new FormData($('#form-informe')[0]);
+    
+                formDataInforme.forEach(function (value, key) {
+                    formDataCamion.append(key, value);
+                });
+    
+                $.ajax({
+                    url: '/',
+                    type: 'POST',
+                    processData: false,
+                    contentType: false,
+                    data: formDataCamion,
+                    success: function (response) {
+                        // Manejar la respuesta si es necesario
+                        console.log(response);
+                    },
+                    error: function (error) {
+                        // Manejar el error si es necesario
+                        console.error(error);
+                    }
+                });
+
+            });
+        });
+    </script>
+    
+</body>
+
+{% endblock %}
