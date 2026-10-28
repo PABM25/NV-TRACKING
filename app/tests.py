@@ -37,3 +37,7 @@ class ControlCalidadTests(TestCase):
         InformeControlCalidad.objects.create(temperatura_almacenamiento='5', aprobado=False)
         respuesta = self.client.get(reverse('control_calidad'))
         self.assertContains(respuesta, 'Rechazado')
+
+    def test_formulario_de_creacion_no_pide_estado(self):
+        from .forms import InformeControlCalidadForm
+        self.assertNotIn('aprobado', InformeControlCalidadForm().fields)

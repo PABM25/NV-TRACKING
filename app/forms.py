@@ -4,11 +4,8 @@ from .models import InformeControlCalidad, Camion, LugarDestino, Barco
 class InformeControlCalidadForm(forms.ModelForm):
     class Meta:
         model = InformeControlCalidad
-        fields = '__all__'
-        widgets = {
-            'fecha_ingreso': forms.DateInput(attrs={'type': 'date'})
-            # Puedes personalizar más widgets aquí para otros campos de fecha si lo necesitas
-        }
+        # El estado se decide después, en la vista de control de calidad.
+        exclude = ['aprobado']
 
 class CamionForm(forms.ModelForm):
     class Meta:
