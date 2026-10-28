@@ -3,6 +3,7 @@ from .forms import CamionForm, InformeControlCalidadForm, LugarDestinoForm, Barc
 from .models import Barco, Camion, InformeControlCalidad
 from django.contrib import messages
 from django.http import JsonResponse
+from django.views.decorators.http import require_POST
 
 def index(request):
     camion_form = CamionForm()
@@ -53,19 +54,17 @@ def barco(request):
     
     return render(request, 'app/barco.html', context)
 
+@require_POST
 def aprobar_control(request, informe_id):
-    informe = InformeControlCalidad.objects.get(pk=informe_id)
-    # Aquí manejas la lógica para aprobar o rechazar el informe
-    informe.aprobado = True  # Por ejemplo, marcamos el informe como aprobado
+    informe = get_object_or_404(InformeControlCalidad, pk=informe_id)
+    informe.aprobado = True
     informe.save()
-    return redirect('control_calidad')  # Redirige de vuelta a la página de control de calidad
+    return redirect('control_calidad')
 
+
+@require_POST
 def rechazar_control(request, informe_id):
-    informe = get_object_or_404(informe, pk=informe_id)
-    
-    # Aquí podrías realizar la lógica para marcar el informe como rechazado
+    informe = get_object_or_404(InformeControlCalidad, pk=informe_id)
     informe.aprobado = False
     informe.save()
-
-    # Redirige a una página o a la vista de control de calidad
-    return redirect('control_calidad')  # Reemplaza 'control_calidad' con el nombre de tu vista actual
+    return redirect('control_calidad')

@@ -17,6 +17,8 @@ class InformeControlCalidad(models.Model):
     tipo_alimento = models.CharField(max_length=50, choices=TIPO_ALIMENTO_CHOICES, default='1')
     tipo_almacenamiento = models.CharField(max_length=50, choices=TIPO_ALMACENAMIETO_CHOICES, default='1')
     temperatura_almacenamiento = models.CharField(max_length=10)
+    # None = pendiente, True = aprobado, False = rechazado
+    aprobado = models.BooleanField(null=True, default=None)
 
 
 class Camion(models.Model):
